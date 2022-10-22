@@ -2,7 +2,7 @@ import os
 import random
 import sys
 
-from modules import scripts
+from modules import scripts, script_callbacks, shared
 
 warned_about_files = {}
 wildcard_dir = scripts.basedir()
@@ -34,7 +34,7 @@ class WildcardsScript(scripts.Script):
         original_prompt = p.all_prompts[0]
 
         for i in range(len(p.all_prompts)):
-            random.seed(p.all_seeds[i])
+            random.seed(p.all_seeds[0 if shared.opts.wildcards_same_seed else i])
 
             prompt = p.all_prompts[i]
             prompt = "".join(self.replace_wildcard(chunk) for chunk in prompt.split("__"))
@@ -42,4 +42,10 @@ class WildcardsScript(scripts.Script):
 
         if original_prompt != p.all_prompts[0]:
             p.extra_generation_params["Wildcard prompt"] = original_prompt
-    
+
+
+def on_ui_settings():
+    shared.opts.add_option("wildcards_same_seed", shared.OptionInfo(False, "Use same seed for all images", section=("wildcards", "Wildcards")))
+
+
+script_callbacks.on_ui_settings(on_ui_settings)

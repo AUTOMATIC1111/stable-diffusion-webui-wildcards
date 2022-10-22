@@ -1,8 +1,10 @@
 import os
 import random
+import sys
 
 from modules import scripts
 
+warned_about_files = {}
 
 class WildcardsScript(scripts.Script):
     def title(self):
@@ -19,6 +21,10 @@ class WildcardsScript(scripts.Script):
         if os.path.exists(replacement_file):
             with open(replacement_file, encoding="utf8") as f:
                 return random.choice(f.read().splitlines())
+        else:
+            if replacement_file not in warned_about_files:
+                print(f"File {replacement_file} not found for the __{text}__ wildcard.", file=sys.stderr)
+                warned_about_files[replacement_file] = 1
 
         return text
 

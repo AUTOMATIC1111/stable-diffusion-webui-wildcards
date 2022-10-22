@@ -14,7 +14,7 @@ class WildcardsScript(scripts.Script):
         return scripts.AlwaysVisible
 
     def replace_wildcard(self, text):
-        if " " in text:
+        if " " in text or len(text)==0:
             return text
 
         replacement_file = os.path.join(scripts.basedir(), f"wildcards/{text}.txt")

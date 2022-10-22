@@ -31,7 +31,7 @@ class WildcardsScript(scripts.Script):
         return text
 
     def process(self, p):
-        p.extra_generation_params["Wildcard prompt"] = p.all_prompts[0]
+        original_prompt = p.all_prompts[0]
 
         for i in range(len(p.all_prompts)):
             random.seed(p.all_seeds[i])
@@ -39,3 +39,7 @@ class WildcardsScript(scripts.Script):
             prompt = p.all_prompts[i]
             prompt = "".join(self.replace_wildcard(chunk) for chunk in prompt.split("__"))
             p.all_prompts[i] = prompt
+
+        if original_prompt != p.all_prompts[0]:
+            p.extra_generation_params["Wildcard prompt"] = original_prompt
+    

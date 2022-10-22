@@ -5,6 +5,8 @@ import sys
 from modules import scripts
 
 warned_about_files = {}
+wildcard_dir = scripts.basedir()
+
 
 class WildcardsScript(scripts.Script):
     def title(self):
@@ -14,10 +16,10 @@ class WildcardsScript(scripts.Script):
         return scripts.AlwaysVisible
 
     def replace_wildcard(self, text):
-        if " " in text or len(text)==0:
+        if " " in text or len(text) == 0:
             return text
 
-        replacement_file = os.path.join(scripts.basedir(), f"wildcards/{text}.txt")
+        replacement_file = os.path.join(wildcard_dir, "wildcards", f"{text}.txt")
         if os.path.exists(replacement_file):
             with open(replacement_file, encoding="utf8") as f:
                 return random.choice(f.read().splitlines())

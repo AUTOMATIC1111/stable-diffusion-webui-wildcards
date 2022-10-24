@@ -34,8 +34,11 @@ class WildcardsScript(scripts.Script):
         original_prompt = p.all_prompts[0]
 
         for i in range(len(p.all_prompts)):
-            random.seed(p.all_seeds[0 if shared.opts.wildcards_same_seed else i])
-
+            if shared.opts.wildcards_same_seed:
+                random.seed(p.all_seeds[0])
+            else:
+                random.seed(a=None, version=2)
+                
             prompt = p.all_prompts[i]
             prompt = "".join(self.replace_wildcard(chunk) for chunk in prompt.split("__"))
             p.all_prompts[i] = prompt

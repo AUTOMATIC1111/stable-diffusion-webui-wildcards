@@ -15,14 +15,14 @@ class WildcardsScript(scripts.Script):
     def show(self, is_img2img):
         return scripts.AlwaysVisible
 
-    def replace_wildcard(self, text):
+    def replace_wildcard(self, text, gen):
         if " " in text or len(text) == 0:
             return text
 
         replacement_file = os.path.join(wildcard_dir, "wildcards", f"{text}.txt")
         if os.path.exists(replacement_file):
             with open(replacement_file, encoding="utf8") as f:
-                return random.choice(f.read().splitlines())
+                return gen.choice(f.read().splitlines())
         else:
             if replacement_file not in warned_about_files:
                 print(f"File {replacement_file} not found for the __{text}__ wildcard.", file=sys.stderr)
@@ -34,10 +34,11 @@ class WildcardsScript(scripts.Script):
         original_prompt = p.all_prompts[0]
 
         for i in range(len(p.all_prompts)):
-            random.seed(p.all_seeds[0 if shared.opts.wildcards_same_seed else i])
+            gen = random.Random()
+            gen.seed(p.all_seeds[0 if shared.opts.wildcards_same_seed else i])
 
             prompt = p.all_prompts[i]
-            prompt = "".join(self.replace_wildcard(chunk) for chunk in prompt.split("__"))
+            prompt = "".join(self.replace_wildcard(chunk, gen) for chunk in prompt.split("__"))
             p.all_prompts[i] = prompt
 
         if original_prompt != p.all_prompts[0]:

@@ -47,15 +47,18 @@ class WildcardsScript(scripts.Script):
         # gets the value of the wildcard being sorted by
         # will only attempt to find the first instance of said wildcard
         global wildcard_sort_name
+        wildcard_sort_name = ""
         new_prompt = ""
-        matched = False
         for chunk in prompt.split("__"):
             replace_val, is_wildcard = self.replace_wildcard(chunk, gen)
             new_prompt += replace_val
-            if shared.opts.wildcard_key == chunk and is_wildcard and not matched:
-                wildcard_sort_name = replace_val.replace(
-                    '\\', '').replace('/', '-')
-                matched = True
+            if shared.opts.wildcard_key == chunk and is_wildcard:
+                if not wildcard_sort_name:
+                    wildcard_sort_name = replace_val.replace(
+                        '\\', '').replace('/', '-')
+                else:
+                    wildcard_sort_name += " and " + \
+                        replace_val.replace('\\', '').replace('/', '-')
         return new_prompt
 
     def process(self, p):
@@ -100,7 +103,7 @@ def on_ui_settings():
     shared.opts.add_option("enable_wildcard_sort", shared.OptionInfo(
         False, "Enable wildcard Sort", section=("wildcards", "Wildcards")))
     shared.opts.add_option("wildcard_key", shared.OptionInfo(
-        "character", "Wildcard to sort image by (without the underscores __)", section=("wildcards", "Wildcards")))
+        "character", "Wildcard to sort image by", section=("wildcards", "Wildcards")))
 
 
 script_callbacks.on_ui_settings(on_ui_settings)

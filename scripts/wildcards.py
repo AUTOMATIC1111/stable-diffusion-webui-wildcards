@@ -53,13 +53,12 @@ class WildcardsScript(scripts.Script):
             replace_val, is_wildcard = self.replace_wildcard(chunk, gen)
             new_prompt += replace_val
             if shared.opts.wildcard_key == chunk and is_wildcard:
-                if not wildcard_sort_name:
-                    wildcard_sort_name = replace_val.replace(
-                        '\\', '').replace('/', '-')
-                else:
-                    wildcard_sort_name += " and " + \
-                        replace_val.replace('\\', '').replace('/', '-')
+                wildcard_val = self.clean_wildcard(replace_val)
+                wildcard_sort_name = wildcard_val if not wildcard_sort_name else f"{wildcard_sort_name} and {wildcard_val}"
         return new_prompt
+
+    def clean_wildcard(self, wildcard_val):
+        return wildcard_val.replace('\\', '').replace('/', '-')
 
     def process(self, p):
         original_prompt = p.all_prompts[0]

@@ -13,7 +13,7 @@ wildcard_sort_name = ""
 class WildcardsScript(scripts.Script):
 
     def title(self):
-        return "Simple wildcards"
+        return "Sorted wildcards"
 
     def show(self, is_img2img):
         return scripts.AlwaysVisible

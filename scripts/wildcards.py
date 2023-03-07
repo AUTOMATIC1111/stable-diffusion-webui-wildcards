@@ -32,6 +32,7 @@ class WildcardsScript(scripts.Script):
 
     def process(self, p):
         original_prompt = p.all_prompts[0]
+        original_negative_prompt = p.all_negative_prompts[0]
 
         for i in range(len(p.all_prompts)):
             gen = random.Random()
@@ -40,9 +41,15 @@ class WildcardsScript(scripts.Script):
             prompt = p.all_prompts[i]
             prompt = "".join(self.replace_wildcard(chunk, gen) for chunk in prompt.split("__"))
             p.all_prompts[i] = prompt
+            
+            prompt = p.all_negative_prompts[i]
+            prompt = "".join(self.replace_wildcard(chunk, gen) for chunk in prompt.split("__"))
+            p.all_negative_prompts[i] = prompt
 
         if original_prompt != p.all_prompts[0]:
             p.extra_generation_params["Wildcard prompt"] = original_prompt
+        if original_negative_prompt != p.all_negative_prompts[0]
+            p.extra_generation_params["Wildcard negative prompt"] = original_negative_prompt
 
 
 def on_ui_settings():

@@ -47,7 +47,7 @@ class WildcardsScript(scripts.Script):
         original_prompt = p.all_prompts[0]
 
         p.all_prompts = self.replace_prompts(p.all_prompts, p.all_seeds)
-        if hasattr(p, 'all_hr_prompts'):
+        if getattr(p, 'all_hr_prompts', None) is not None:
             p.all_hr_prompts = self.replace_prompts(p.all_hr_prompts, p.all_seeds)
 
         if original_prompt != p.all_prompts[0]:

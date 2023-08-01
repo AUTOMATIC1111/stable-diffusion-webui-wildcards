@@ -24,7 +24,9 @@ class WildcardsScript(scripts.Script):
         replacement_file = os.path.join(wildcards_dir, f"{text}.txt")
         if os.path.exists(replacement_file):
             with open(replacement_file, encoding="utf8") as f:
-                return gen.choice(f.read().splitlines())
+                choices = f.read().splitlines()
+                choices = [x for x in choices if not x.startswith("#")]
+                return gen.choice(choices)
         else:
             if replacement_file not in warned_about_files:
                 print(f"File {replacement_file} not found for the __{text}__ wildcard.", file=sys.stderr)

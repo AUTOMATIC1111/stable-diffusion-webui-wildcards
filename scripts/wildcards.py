@@ -38,6 +38,8 @@ class WildcardsScript(scripts.Script):
                 if gen > len(textarray):
                     genfloor = math.floor(gen / len(textarray))
                     gen = gen - (len(textarray) * genfloor)
+                    if gen > len(textarray):
+                        gen = len(textarray)
                     print(bcolors.YELLOW + f"[seed:{genseed}][line:{gen + 1}]: {textarray[gen][:40]}" + bcolors.RESET)
                     return textarray[gen]
                 else:
@@ -53,10 +55,10 @@ class WildcardsScript(scripts.Script):
 
     def process(self, p):
         original_prompt = p.all_prompts[0]
-        
+
         for j, text in enumerate(p.all_prompts):
             genseed = p.all_seeds[j]
-            gen = self.get_digit(p.all_seeds[j], 3) + 33 * self.get_digit(p.all_seeds[j], 1) + 33 * self.get_digit(p.all_seeds[j], 0)
+            gen = (self.get_digit(p.all_seeds[j], 3) + 2 * 2 + self.get_digit(p.all_seeds[j], 1) + 2 * 2 + self.get_digit(p.all_seeds[j], 0) * 100)
             text = text.split("__")
             i = 0
             while i < len(text):    
@@ -69,10 +71,10 @@ class WildcardsScript(scripts.Script):
                             finalgen = gen + ( x * 11 )
                             text[i] = self.replace_wildcard(line, finalgen, genseed)
                 i = i + 1
-
+                
             p.all_prompts[j] = ''.join(text)
             if getattr(p, 'all_hr_prompts', None) is not None:
-                p.all_hr_prompts = self.replace_prompts(p.all_hr_prompts, i, gen)
+                p.all_hr_prompts[j] = ''.join(text) 
 
         if original_prompt != p.all_prompts[0]:
             p.extra_generation_params["Wildcard prompt"] = original_prompt

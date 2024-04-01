@@ -35,16 +35,10 @@ class WildcardsScript(scripts.Script):
             with open(replacement_file, encoding="utf8") as f:
                 textarray = []
                 textarray = f.read().splitlines()
-                if gen > len(textarray):
-                    genfloor = math.floor(gen / len(textarray))
-                    gen = gen - (len(textarray) * genfloor)
-                    if gen > len(textarray):
-                        gen = len(textarray)
-                    print(bcolors.YELLOW + f"[seed:{genseed}][line:{gen + 1}]: {textarray[gen][:40]}" + bcolors.RESET)
-                    return textarray[gen]
-                else:
-                    print(bcolors.YELLOW + f"[seed:{genseed}][line:{gen + 1}]: {textarray[gen][:40]}" + bcolors.RESET)
-                    return textarray[gen]
+                genfloor = math.floor(gen / len(textarray))
+                gen = gen - (len(textarray) * genfloor)
+                print(bcolors.YELLOW + f"[ seed : {genseed} ][ line : {gen + 1} ] Line: {textarray[gen][:60]}" + bcolors.RESET)
+            return textarray[gen]
 
         else:
             if replacement_file not in warned_about_files:

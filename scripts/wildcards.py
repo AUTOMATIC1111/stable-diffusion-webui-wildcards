@@ -31,7 +31,7 @@ class WildcardsScript(scripts.Script):
                 textarray = []
                 textarray = f.read().splitlines()
                 nline = round(len(textarray) * rlist)
-                print(bcolors.YELLOW + f"[-] {nline:02d} - {textarray[nline-1][:80]}" + bcolors.RESET)
+                print(bcolors.YELLOW + "[*]" + bcolors.RESET + bcolors.YELLOW + f"Line {nline:02d} " + ( f"{text}.txt" if len(text)<15 else f"{text[:14]}_.txt" ) + ( "\t\t" if len(text)<8 else "\t" ) + f"► {textarray[nline-1][:100]}" + bcolors.RESET)
             return textarray[nline-1]
 
         else:
@@ -47,7 +47,6 @@ class WildcardsScript(scripts.Script):
             original_seed
         except NameError:
             original_seed = p.all_seeds[0]
-
         for j, text in enumerate(p.all_prompts):
             random.seed(original_seed if shared.opts.wildcards_same_seed_batch else p.all_seeds[j])
             rand_list = []
@@ -72,6 +71,9 @@ class WildcardsScript(scripts.Script):
             p.all_prompts[j] = ''.join(text)
             if getattr(p, 'all_hr_prompts', None) is not None:
                 p.all_hr_prompts[j] = ''.join(text) 
+
+        if shared.opts.wildcards_same_seed_batch == False:
+            del original_seed
 
         if original_prompt != p.all_prompts[0]:
             p.extra_generation_params["Wildcard prompt"] = original_prompt

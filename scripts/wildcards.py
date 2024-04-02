@@ -18,13 +18,10 @@ class WildcardsScript(scripts.Script):
     def title(self):
         return "Simple wildcards"
 
-    def get_digit(self, number, n):
-        return number // 10**n % 10
-
     def show(self, is_img2img):
         return scripts.AlwaysVisible
 
-    def replace_wildcard(self, text, gen, genseed):
+    def replace_wildcard(self, text, rlist, rseed):
         if " " in text or len(text) == 0:
             return text
 
@@ -35,35 +32,38 @@ class WildcardsScript(scripts.Script):
             with open(replacement_file, encoding="utf8") as f:
                 textarray = []
                 textarray = f.read().splitlines()
-                genfloor = math.floor(gen / len(textarray))
-                gen = gen - (len(textarray) * genfloor)
-                print(bcolors.YELLOW + f"[ seed : {genseed} ][ line : {gen + 1} ] Line: {textarray[gen][:60]}" + bcolors.RESET)
-            return textarray[gen]
+                nline = round(len(textarray) * rlist)
+                print(bcolors.YELLOW + f"[-] {nline:02d} - {textarray[nline-1][:80]}" + bcolors.RESET)
+            return textarray[nline-1]
 
         else:
             if replacement_file not in warned_about_files:
                 print(f"File {replacement_file} not found for the _{text}_ wildcard.", file=sys.stderr)
                 warned_about_files[replacement_file] = 1
-
         return text
 
     def process(self, p):
         original_prompt = p.all_prompts[0]
 
         for j, text in enumerate(p.all_prompts):
-            genseed = p.all_seeds[j]
-            gen = (self.get_digit(p.all_seeds[j], 3) + 2 * 2 + self.get_digit(p.all_seeds[j], 1) + 2 * 2 + self.get_digit(p.all_seeds[j], 0) * 100)
+            random.seed(p.all_seeds[j])
+            rand_list = []
+            n=20
+            for i in range(n):
+                rand_list.append(random.random())
             text = text.split("__")
             i = 0
             while i < len(text):    
                 line = str(text[i])
                 if line != " " or line != 0:
                     x = 0
-                    for x in range(11):
+                    for x in range(20):
                         if line.startswith(str(x) + "_"):
-                            line = line[2:]
-                            finalgen = gen + ( x * 11 )
-                            text[i] = self.replace_wildcard(line, finalgen, genseed)
+                            if len(str(x)) == 2:
+                                line = line[3:]
+                            else:
+                                line = line[2:]
+                            text[i] = self.replace_wildcard(line, rand_list[x], p.all_seeds[j])
                 i = i + 1
                 
             p.all_prompts[j] = ''.join(text)

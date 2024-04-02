@@ -1,8 +1,6 @@
 import os
 import random
 import sys
-import re
-import math
 
 from modules import scripts, script_callbacks, shared
 

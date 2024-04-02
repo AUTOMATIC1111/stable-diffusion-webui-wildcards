@@ -31,7 +31,7 @@ class WildcardsScript(scripts.Script):
                 textarray = []
                 textarray = f.read().splitlines()
                 nline = round(len(textarray) * rlist)
-                print(bcolors.YELLOW + "[*]" + bcolors.RESET + bcolors.YELLOW + f"Line {nline:02d} " + ( f"{text}.txt" if len(text)<15 else f"{text[:14]}_.txt" ) + ( "\t\t" if len(text)<8 else "\t" ) + f"► {textarray[nline-1][:100]}" + bcolors.RESET)
+                print(bcolors.YELLOW + "[*]" + bcolors.RESET + bcolors.YELLOW + f"Line {nline:02d} " + ( f"{text}.txt" if len(text)<15 else f"{text[:14]}_.txt" ) + ( "\t\t" if len(text)<9 else "\t" ) + f"► {textarray[nline-1][:100]}" + bcolors.RESET)
             return textarray[nline-1]
 
         else:

@@ -1,8 +1,6 @@
 import os
 import random
 import sys
-import re
-import math
 
 from modules import scripts, script_callbacks, shared
 
@@ -44,9 +42,14 @@ class WildcardsScript(scripts.Script):
 
     def process(self, p):
         original_prompt = p.all_prompts[0]
+        global original_seed
+        try:
+            original_seed
+        except NameError:
+            original_seed = p.all_seeds[0]
 
         for j, text in enumerate(p.all_prompts):
-            random.seed(p.all_seeds[j])
+            random.seed(original_seed if shared.opts.wildcards_same_seed_batch else p.all_seeds[j])
             rand_list = []
             n=20
             for i in range(n):
@@ -72,3 +75,9 @@ class WildcardsScript(scripts.Script):
 
         if original_prompt != p.all_prompts[0]:
             p.extra_generation_params["Wildcard prompt"] = original_prompt
+
+def on_ui_settings():
+    shared.opts.add_option("wildcards_same_seed_batch", shared.OptionInfo(False, "Keep the same wildcard seed generation from the first image you generate until this setting is turned off. Compatible with Adetailer now.", section=("wildcards", "Wildcards")))
+
+
+script_callbacks.on_ui_settings(on_ui_settings)

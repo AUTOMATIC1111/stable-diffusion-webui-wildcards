@@ -141,10 +141,10 @@ Save your wildcards in the wildcards folder. To avoid issues, use only a-z in yo
                             text[i] = self.replace_wildcard(sendline, rand_list_tiers[x])
                     if "_" not in line and line != sendline:
                         x = i + 1
-                        if i > 20:
-                            x = i % 20
+                        if x > 19:
+                            x = i % 19
                             if x == 0:
-                                x = 20
+                                x = 19
                         text[i] = self.replace_wildcard(line, rand_list[x])
                     if len(p.all_seeds) > 1:
                         p.all_prompts[j] = ''.join(text)

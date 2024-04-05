@@ -32,7 +32,7 @@ class WildcardsScript(scripts.Script):
                     wca_iterative_unlock = gr.Checkbox(label="Don't lock iterative wildcards ( __$_textfile__ )", value=False, elem_id=elem+"iterativeunlock", interactive=False)
                 with gr.Row():
                     wca_linelock = gr.Number(value=1, precision=0, label="Specific iterative txt file line to lock", interactive=False, elem_id=elem+"linelock")
-                with gr.Accordion('More info about Anti Burn',open=False,elem_id=elem+'help'):
+                with gr.Accordion('More info about Wildcards for adetailer',open=False,elem_id=elem+'help'):
                     gr.Markdown('''
 
 # Methods:

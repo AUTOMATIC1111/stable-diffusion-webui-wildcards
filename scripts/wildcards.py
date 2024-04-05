@@ -138,7 +138,7 @@ Save your wildcards in the wildcards folder. To avoid issues, use only a-z in yo
                         if line.startswith(str(x) + "_"):
                             if x > 9:
                                 line = line[3:]
-                            else
+                            else:
                                 line = line[2:]
                             sendline = line
                             text[i] = self.replace_wildcard(sendline, rand_list_tiers[x])

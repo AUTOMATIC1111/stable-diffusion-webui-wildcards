@@ -5,7 +5,9 @@ An personal fork I made to make wildcards extension work better with Adetailer.
 # Upate:
 
 -Added the functionality back to use normal wildcards `__wildcard__` next to tiered wild cards `__0_wildcard__` upto `__19_wildcard__`.
+
 -Added functionality for iterative wildcards that go through text files line by line. `__$_wildcard__`
+
 -Fixed a bunch of bugs and made it work a lot better, also added settings to txt2img UI instead of inside settings menu for seed locking.
 
 ## Changes from main extension:

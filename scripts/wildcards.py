@@ -29,9 +29,9 @@ class WildcardsScript(scripts.Script):
                 with gr.Row():
                     wca_seed = gr.Number(precision=0, label="Which seed to lock", interactive=False, elem_id=elem+"seed")
                 with gr.Row():
-                    wca_iterative_unlock = gr.Checkbox(label="Don't lock iterative wildcards ( __$_textfile__ )", value=False, elem_id=elem+"iterativeunlock", interactive=False)
+                    wca_linelock = gr.Number(value=1, precision=0, label="Specific iterative line number to lock", interactive=False, elem_id=elem+"linelock")
                 with gr.Row():
-                    wca_linelock = gr.Number(value=1, precision=0, label="Specific iterative txt file line to lock", interactive=False, elem_id=elem+"linelock")
+                    wca_iterative_unlock = gr.Checkbox(label="Don't lock iterative wildcards", value=False, elem_id=elem+"iterativeunlock", interactive=False)
                 with gr.Accordion('More info about Wildcards for adetailer',open=False,elem_id=elem+'help'):
                     gr.Markdown('''
 

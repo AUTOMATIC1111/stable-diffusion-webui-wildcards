@@ -77,7 +77,7 @@ Save your wildcards in the wildcards folder. To avoid issues, use only a-z in yo
             textarray = f.read().splitlines()
             nline = round(len(textarray) * rlist)
             if rlist >= 1:
-            nline = rlist
+                nline = rlist
                 if rlist > len(textarray):
                     nline = rlist % len(textarray)
                     if nline == 0:

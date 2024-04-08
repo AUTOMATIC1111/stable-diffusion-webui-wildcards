@@ -113,7 +113,7 @@ Save your wildcards in the wildcards folder. To avoid issues, use only a-z in yo
                 if p.all_seeds[0] > original_seed:
                     fixedline = p.all_seeds[0] - original_seed + 1
             if wca_enable == True and wca_iterative_unlock == False:
-                fixedline == wca_linelock
+                fixedline = wca_linelock
             text = text.split("__")
             i = 0
             n = 0

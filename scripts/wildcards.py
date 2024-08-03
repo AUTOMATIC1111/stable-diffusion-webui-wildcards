@@ -50,14 +50,15 @@ class WildcardsScript(scripts.Script):
         ]:
             if all_original_prompts := getattr(p, attr, None):
                 setattr(p, attr, self.replace_prompts(all_original_prompts, p.all_seeds))
-                if all_original_prompts[0] != getattr(p, attr)[0]:
+                if shared.opts.wildcards_write_infotext and all_original_prompts[0] != getattr(p, attr)[0]:
                     if infotext_suffix.startswith("hr ") and p.extra_generation_params.get(f"Wildcard {infotext_suffix[3:]}", None) == all_original_prompts[0]:
-                        continue
+                        continue  # don't overwrite original hr prompt is same as original first pass prompt
                     p.extra_generation_params[f"Wildcard {infotext_suffix}"] = all_original_prompts[0]
 
 
 def on_ui_settings():
     shared.opts.add_option("wildcards_same_seed", shared.OptionInfo(False, "Use same seed for all images", section=("wildcards", "Wildcards")))
+    shared.opts.add_option("wildcards_write_infotext", shared.OptionInfo(True, "Write original prompt to infotext", section=("wildcards", "Wildcards")).info("the original prompt before __wildcards__ are applied"))
 
 
 script_callbacks.on_ui_settings(on_ui_settings)

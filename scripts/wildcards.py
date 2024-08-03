@@ -45,13 +45,18 @@ class WildcardsScript(scripts.Script):
 
     def process(self, p):
         original_prompt = p.all_prompts[0]
+        original_negative_prompt = p.all_negative_prompts[0]
 
         p.all_prompts = self.replace_prompts(p.all_prompts, p.all_seeds)
+        p.all_negative_prompts = self.replace_prompts(p.all_negative_prompts, p.all_seeds)
         if getattr(p, 'all_hr_prompts', None) is not None:
             p.all_hr_prompts = self.replace_prompts(p.all_hr_prompts, p.all_seeds)
 
         if original_prompt != p.all_prompts[0]:
             p.extra_generation_params["Wildcard prompt"] = original_prompt
+
+        if original_negative_prompt != p.all_negative_prompts[0]:
+            p.extra_generation_params["Wildcard negative prompt"] = original_negative_prompt
 
 
 def on_ui_settings():

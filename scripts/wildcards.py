@@ -43,17 +43,19 @@ class WildcardsScript(scripts.Script):
 
         return res
 
+    def apply_wildcards(self, p, attr, infotext_suffix, infotext_compare=None):
+        if all_original_prompts := getattr(p, attr, None):
+            setattr(p, attr, self.replace_prompts(all_original_prompts, p.all_seeds))
+            if (shared.opts.wildcards_write_infotext and all_original_prompts[0] != getattr(p, attr)[0] and
+                    (not infotext_compare or p.extra_generation_params.get(f"Wildcard {infotext_compare}", None) != all_original_prompts[0])):
+                p.extra_generation_params[f"Wildcard {infotext_suffix}"] = all_original_prompts[0]
+
     def process(self, p, *args):
-        for attr, infotext_suffix in [
-            ('all_prompts', 'prompt'), ('all_negative_prompts', 'negative prompt'),
-            ('all_hr_prompts', 'hr prompt'), ('all_hr_negative_prompts', 'hr negative prompt'),
+        for attr, infotext_suffix, infotext_compare in [
+            ('all_prompts', 'prompt', None), ('all_negative_prompts', 'negative prompt', None),
+            ('all_hr_prompts', 'hr prompt', 'prompt'), ('all_hr_negative_prompts', 'hr negative prompt', 'negative prompt'),
         ]:
-            if all_original_prompts := getattr(p, attr, None):
-                setattr(p, attr, self.replace_prompts(all_original_prompts, p.all_seeds))
-                if shared.opts.wildcards_write_infotext and all_original_prompts[0] != getattr(p, attr)[0]:
-                    if infotext_suffix.startswith("hr ") and p.extra_generation_params.get(f"Wildcard {infotext_suffix[3:]}", None) == all_original_prompts[0]:
-                        continue  # don't overwrite original hr prompt is same as original first pass prompt
-                    p.extra_generation_params[f"Wildcard {infotext_suffix}"] = all_original_prompts[0]
+            self.apply_wildcards(p, attr, infotext_suffix, infotext_compare)
 
 
 def on_ui_settings():

@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import re
 
 from modules import scripts, script_callbacks, shared
 
@@ -38,8 +39,21 @@ class WildcardsScript(scripts.Script):
         for i, text in enumerate(prompts):
             gen = random.Random()
             gen.seed(seeds[0 if shared.opts.wildcards_same_seed else i])
-
-            res.append("".join(self.replace_wildcard(chunk, gen) for chunk in text.split("__")))
+            rex = re.compile(r'\b__([^\s\r\n]+?)__\b')
+            last_index = 0
+            m = rex.finditer(text)
+            ret = ""
+            for match in m:
+                # print(match, match.span(0)[0], match.span(0)[1], match[1])
+                if(last_index<match.span(0)[0]):
+                    ret += text[last_index:match.span(0)[0]]
+                # ret += f"(replace {match[1]})"
+                ret += self.replace_wildcard(match[1], gen)
+                last_index = match.span(0)[1]
+            if(last_index<len(text)):
+                ret += text[last_index:]
+            res.append(ret)
+            # res.append("".join(self.replace_wildcard(chunk, gen) for chunk in text.split("__")))
 
         return res
 

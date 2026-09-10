@@ -152,7 +152,7 @@ class WildcardsScript(scripts.Script):
         for j in range(len(p.all_seeds)):
             current_seed = p.all_seeds[j]
             batch_offset = (current_seed - self.anchor_seed)
-            print (BColors.YELLOW + f"[*] Current Seed: {current_seed}" + BColors.RESET)
+            print (f"{BColors.YELLOW}[*] Current Seed: {current_seed}{BColors.RESET}")
             for _, prompt_list, color in prompt_map:
                 if not prompt_list:
                     continue

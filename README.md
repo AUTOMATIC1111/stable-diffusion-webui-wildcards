@@ -1,4 +1,4 @@
-## Wildcards with Adetailer Support (Forge)
+## Wildcards with Adetailer Support
 
 #### Supports:
 * ***All Prompts***: Positive \ Negative \ HR Postive \ HR Negative \ Adetailer Positive \ Adetailer Negative

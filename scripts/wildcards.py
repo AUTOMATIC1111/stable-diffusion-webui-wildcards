@@ -89,7 +89,7 @@ class WildcardsScript(scripts.Script):
             idx = rng.randint(0, count - 1)
 
         left_side = f"{base_file}.txt Line {idx+1}"
-        print(f"{color}[{mode}] {BColors.RESET}{BColors.YELLOW}{left_side.ljust(35)} ► {lines[idx][:50]}{BColors.RESET}")
+        print (f"{color}[{mode}] {BColors.YELLOW}{left_side.ljust(35)} ► {lines[idx][:50]}{BColors.RESET}")
         return lines[idx]
 
     def process_single_prompt(self, prompt, current_seed, batch_offset, config, color, depth=0):
@@ -133,8 +133,8 @@ class WildcardsScript(scripts.Script):
                     p.extra_generation_params["Wildcard HR Pos"] = p.original_hr_prompts[0]
                 if p.original_hr_negatives:
                     p.extra_generation_params["Wildcard HR Neg"] = p.original_hr_negatives[0]
-                print(BColors.YELLOW + "[N] Normal [T] Tiered [I] Iterative [L] Locked " + BColors.OK + "[*] " + BColors.RESET + BColors.YELLOW + "POS " + BColors.RESET + BColors.RED + "[*] " + BColors.RESET + BColors.YELLOW + "NEG " + BColors.RESET + BColors.CYAN + "[*] " + BColors.RESET + BColors.YELLOW + "HR POS " + BColors.RESET + BColors.PURPLE + "[*] " + BColors.RESET + BColors.YELLOW + "HR NEG" + BColors.RESET)
-                print (BColors.YELLOW + f"[*] Starting Seed: {self.anchor_seed} Batchsize: {self.total_batch_size}" + BColors.RESET)
+                print (f"{BColors.YELLOW}[N] Normal [T] Tiered [I] Iterative [L] Locked {BColors.OK}[*] POS {BColors.RED}[*] NEG {BColors.CYAN}[*] HR POS {BColors.PURPLE}[*] HR NEG{BColors.RESET}")
+                print (f"{BColors.YELLOW}[*] Batchsize: {self.total_batch_size}{BColors.RESET}")
 
         config = {
             'outer_sep': outer_sep, 'inner_sep': inner_sep, 'iter_sym': iter_sym,
